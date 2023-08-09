@@ -1,0 +1,16 @@
+.news_holder {
+    margin: 120px 100px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.post_news {
+    max-width: 375px;
+    width: 100%;
+    min-height: 200px;
+    border: 1px solid grey;
+    padding: 18px;
+}
+

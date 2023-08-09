@@ -146,6 +146,9 @@ function wp_dev_scripts() {
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+
+	wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' );
+	wp_enqueue_style( 'wp_dev_main_style', get_template_directory_uri() . '/css/main.css', 'wp_dev-style-css' );
 }
 add_action( 'wp_enqueue_scripts', 'wp_dev_scripts' );
 
@@ -176,3 +179,47 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+
+/**
+ ********************************************************** Wp_dev - my custom code 
+ */
+
+ function create_post_type_News() {
+	register_post_type( 'news',
+	array(
+		'labels'      => array(
+			'name'          => __('News'),
+			'singular_name' => __('News'),
+			'add_new' => __('Add News'),
+		),
+			'public'      => true,
+			'has_archive' => true,
+			'menu_position' => 5,
+			'rewrite' => 'news',
+			'menu_icon' => 'dashicons-star-filled',
+			'supports' => array('title', 'editor', 'thumbnail', 'post-formats', 'excerpt'),	
+		)
+	);
+}
+
+add_action('init', 'create_post_type_News');
+
+function create_news_taxonomy() {
+    $labels = array(
+        'name' => __('News Categories'),
+        'singular_name' => __('News Category'),
+    );
+
+    register_taxonomy('news_category', 'news', array(
+        'hierarchical' => true,
+        'labels' => $labels,
+        'show_ui' => true,
+    ));
+
+    wp_insert_term('Politics', 'news_category');
+    wp_insert_term('Technology', 'news_category');
+    wp_insert_term('Science', 'news_category');
+    wp_insert_term('Sports', 'news_category');
+    wp_insert_term('Culture', 'news_category');
+}
+add_action('init', 'create_news_taxonomy');
