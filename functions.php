@@ -140,6 +140,9 @@ add_action( 'widgets_init', 'wp_dev_widgets_init' );
 function wp_dev_scripts() {
 	wp_enqueue_style( 'wp_dev-style', get_stylesheet_uri(), array(), _S_VERSION );
 	wp_style_add_data( 'wp_dev-style', 'rtl', 'replace' );
+	wp_enqueue_style( 'wp_dev_main_style', get_template_directory_uri() . '/css/main.css', array() );
+
+	wp_enqueue_script('jquery');
 
 	wp_enqueue_script( 'wp_dev-navigation', get_template_directory_uri() . '/js/navigation.js', array(), _S_VERSION, true );
 
@@ -148,7 +151,13 @@ function wp_dev_scripts() {
 	}
 
 	wp_enqueue_style( 'bootstrap', 'https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css' );
-	wp_enqueue_style( 'wp_dev_main_style', get_template_directory_uri() . '/css/main.css', 'wp_dev-style-css' );
+
+	
+    wp_enqueue_script('ajax-filter', get_template_directory_uri() . '/js/ajax-filter.js', array('jquery'), '', true);
+    wp_localize_script('ajax-filter', 'ajax_object', array(
+		'ajax_url' => admin_url('admin-ajax.php'),
+	));
+	
 }
 add_action( 'wp_enqueue_scripts', 'wp_dev_scripts' );
 
@@ -223,3 +232,47 @@ function create_news_taxonomy() {
     wp_insert_term('Culture', 'news_category');
 }
 add_action('init', 'create_news_taxonomy');
+
+
+
+
+
+function filter_news() {
+    $selected_categories = $_POST['news_categories'];
+
+    $args = array(
+        'post_type' => 'news',
+        'posts_per_page' => 10,
+    );
+
+    if (!empty($selected_categories)) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'news_category',
+                'field' => 'term_id',
+                'terms' => $selected_categories,
+            ),
+        );
+    }
+
+    $loop = new WP_Query($args);
+
+    if ($loop->have_posts()) :
+        while ($loop->have_posts()) : $loop->the_post();
+            ?>
+            <div class="post_news">
+                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                <?php the_content(); ?>
+            </div>
+            <?php
+        endwhile;
+    else :
+        echo '<p>No results found.</p>';
+    endif;
+
+    wp_reset_postdata();
+
+    die();
+}
+add_action('wp_ajax_filter_news', 'filter_news');
+add_action('wp_ajax_nopriv_filter_news', 'filter_news');
