@@ -25,8 +25,8 @@
 <div id="page" class="site">
 	<a class="skip-link screen-reader-text" href="#primary"><?php esc_html_e( 'Skip to content', 'wp_dev' ); ?></a>
 
-	<!-- <header id="masthead" class="site-header">
-		<div class="site-branding">
+	 <header id="masthead" class="site-header">
+	<!--	<div class="site-branding">
 			<?php
 			the_custom_logo();
 			if ( is_front_page() && is_home() ) :
@@ -43,23 +43,17 @@
 				?>
 				<p class="site-description"><?php echo $wp_dev_description; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 			<?php endif; ?>
-		</div>
+		</div> -->
 
 		<nav id="site-navigation" class="main-navigation">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'wp_dev' ); ?></button>
+			<button class="menu-toggle" aria-controls="header-nav" aria-expanded="false"><?php esc_html_e( 'header-nav', 'wp_dev' ); ?></button>
 			<?php
 			wp_nav_menu(
 				array(
-					'theme_location' => 'menu-1',
-					'menu_id'        => 'primary-menu',
+					'theme_location' => 'header-nav',
+					'menu_id'        => 'header-menu',
 				)
 			);
 			?>
 		</nav>
-	</header> -->
-
-	<ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a href="#">Home</a></li>
-  <li role="presentation"><a href="#">Profile</a></li>
-  <li role="presentation"><a href="#">Messages</a></li>
-</ul>
+	</header>

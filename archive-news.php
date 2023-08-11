@@ -2,9 +2,7 @@
 get_header();
 ?>
 
-<div class="news_holder">
-
-<form id="news-filter">
+<div id="news-filter">
     <?php
     $categories = get_terms(array(
         'taxonomy' => 'news_category',
@@ -16,9 +14,9 @@ get_header();
     endforeach;
     ?>
     <button type="button" id="reset-filter">Reset Filter</button>
-</form>
+</div>
 
-
+<div class="news_holder">
 
 <?php
 $args = array('post_type' => 'news', 'posts_per_page' => 10);
