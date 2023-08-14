@@ -14,3 +14,19 @@
     padding: 18px;
 }
 
+.nav-menu {
+    background-color: rgb(54, 54, 53);
+}
+
+.main-navigation a {
+    color: white;
+    padding: 10px 12px;
+}
+
+.news-container {
+    padding-top: 60px;
+}
+
+#news-filter label {
+    padding: 12px;
+}

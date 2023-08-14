@@ -1,6 +1,10 @@
 <?php
+/* Template Name: News */
+?>
+<?php
 get_header();
 ?>
+<div class="news-container">
 
 <div id="news-filter">
     <?php
@@ -10,7 +14,7 @@ get_header();
     ));
 
     foreach ($categories as $category) :
-        echo '<label><input type="checkbox" name="news_categories[]" value="' . $category->term_id . '"> ' . $category->name . '</label><br>';
+        echo '<label><input type="checkbox" name="news_categories[]" value="' . $category->term_id . '"> ' . $category->name . '</label>';
     endforeach;
     ?>
     <button type="button" id="reset-filter">Reset Filter</button>
@@ -19,7 +23,13 @@ get_header();
 <div class="news_holder">
 
 <?php
-$args = array('post_type' => 'news', 'posts_per_page' => 5);
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+$args = array(
+    'post_type' => 'news', 
+    'posts_per_page' => 5, 
+    'paged' => $paged
+);
 $loop = new WP_Query($args);
 
 while ($loop->have_posts()) : $loop->the_post(); ?>
@@ -31,9 +41,14 @@ while ($loop->have_posts()) : $loop->the_post(); ?>
 
 <?php
 endwhile;
+
+echo paginate_links(array(
+    'total' => $loop->max_num_pages,
+    'current' => $paged,
+));
 ?>
 </div>
-
+</div>
 <?php
 get_footer();
 

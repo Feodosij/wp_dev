@@ -49,7 +49,7 @@ function wp_dev_setup() {
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus(
 		array(
-			'menu-1' => esc_html__( 'Primary', 'wp_dev' ),
+			'header-nav' => esc_html__( 'Primary', 'wp_dev' ),
 		)
 	);
 
@@ -242,7 +242,7 @@ function filter_news() {
 
     $args = array(
         'post_type' => 'news',
-        'posts_per_page' => 10,
+        'posts_per_page' => 5,
     );
 
     if (!empty($selected_categories)) {

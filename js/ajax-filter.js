@@ -1,15 +1,12 @@
 jQuery(function ($) {
   $("#reset-filter").click(function () {
-    // Находим все чекбоксы и снимаем галочки
     $('input[name="news_categories[]"]').prop("checked", false);
-
-    // Отправляем AJAX-запрос для сброса фильтра
     $.ajax({
       url: ajax_object.ajax_url,
       type: "POST",
       data: {
-        action: "filter_news", // Это должно соответствовать имени вашей функции обработки фильтрации
-        news_categories: [], // Пустой массив для сброса фильтрации
+        action: "filter_news", 
+        news_categories: [], 
       },
       success: function (response) {
         $(".news_holder").html(response);
@@ -28,10 +25,10 @@ jQuery(function ($) {
       type: "POST",
       data: {
         action: "filter_news",
-        news_categories: selected_categories,
+        news_categories: selected_categories, 
+        paged: 1,
       },
       success: function (response) {
-        console.log(response);
         $(".news_holder").html(response);
       },
     });
